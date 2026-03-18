@@ -13,7 +13,7 @@ services:
       - "PASSWORD=${TM_PASSWORD}"
       - 'VOLUME_SIZE_LIMIT=1 T'
     volumes:
-      - '/path/to/timemachine/backup:${TM_DATA_PATH}'
+      - ${TM_DATA_PATH}':/opt/timemachine
     tmpfs:
       - /run/samba
     image: 'mbentley/timemachine:smb'
