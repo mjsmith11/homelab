@@ -1,0 +1,19 @@
+services:
+  timemachine:
+    restart: unless-stopped
+    container_name: timemachine
+    hostname: timemachine
+    ports:
+      -137:137/udp
+      -138:138/udp
+      -139:139
+      -445:445
+    environment:
+      - TM_USERNAME=timemachine
+      - "PASSWORD=${TM_PASSWORD}"
+      - 'VOLUME_SIZE_LIMIT=1 T'
+    volumes:
+      - '/path/to/timemachine/backup:${TM_DATA_PATH}'
+    tmpfs:
+      - /run/samba
+    image: 'mbentley/timemachine:smb'
