@@ -5,4 +5,35 @@
                 root * /usr/share/caddy
                 file_server
         }
+    @golinks go.lab.mattsmith.tech {   # replace it your web-url root
+        handle @golinks {
+            map {path} {redirect-uri} {
+                /gm            https://mail.google.com
+                /c             https://calendar.google.com
+                /dr            https://drive.google.com
+                /unifi         https://192.168.1.1
+                /a             https://www.amazon.com
+                /emp           https://ira.empower-retirement.com
+                /f             https://facebook.com
+                /i             https://facebook.com
+                /t             https://x.com
+                /od            https://onedrive.live.com
+                /wordle        https://www.nytimes.com/games/wordle/index.html
+                /jeremy        https://1drv.ms/f/c/5867ff3cdb870ab7/Esz5VHe0uX9Jm1POLTTvjvQByPk6X8K7vgK5X_fBpEaBpw?e=c6FKte
+                /pihole        https://pihole.lab.mattsmith.tech
+                /rickrolled    https://www.youtube.com/watch?v=dQw4w9WgXcQ
+
+                # will add new ones here like the above
+                # ...
+            }
+
+            # this below code is required to actually make the above `map` work
+
+            @hasRedir expression `{redirect-uri} != ""`
+            redir @hasRedir {redirect-uri}
+
+            # code below is to set the default response if the requested shortlink isn't here
+            respond "Thas's an unknown short URL ... :("  
+        }
+    }
 }
