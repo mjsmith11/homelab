@@ -1,4 +1,5 @@
 *.mattsmith.tech {
+    tls internal
     @caddy host lab.mattsmith.tech
         handle @caddy {
                 root * /usr/share/caddy
