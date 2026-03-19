@@ -7,10 +7,10 @@ This repo contains the resources and instructions for my homelab setup centered 
 ### Timemachine
 Server for mac backups. Note: It's currently hardcoded to 1 TB limit for backup data.
 #### Prereqs
-- avahi-daemon not running on host
-- smbd not running on host
-- nmbd not running on host
-- afpd & netatalk not running on host
+- avahi-daemon not running on host (`sudo systemctl stop avahi-daemon && sudo systemctl disable avihi-daemon`)
+- smbd not running on host (`sudo systemctl stop smbd && sudo systemctl disable smbd`)
+- nmbd not running on host (`sudo systemctl stop nmbd && sudo systemctl disable nmbd`)
+- afpd & netatalk not running on host (`sudo systemctl stop netatalk && sudo systemctl disable netatalk`)
 - static ip on host
 - Firewall ports 137/UDP, 138/UDP, 139/TCP, 445/TCP open
 
