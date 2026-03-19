@@ -11,6 +11,15 @@
 }
 *.lab.mattsmith.tech {
     tls internal
+    @pihole host pihole.lab.mattsmith.tech
+        handle @pihole {
+                reverse_proxy https://pihole:443 {
+                    transport http {
+                            tls
+                            tls_insecure_skip_verify
+                    }
+                }
+        }
     @golinks host http://go.lab.mattsmith.tech 
         handle @golinks {
             map {path} {redirect-uri} {
