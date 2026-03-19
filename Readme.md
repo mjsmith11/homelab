@@ -2,6 +2,7 @@
 This repo contains the resources and instructions for my homelab setup centered around docker-compose.yml 
 ## Basic Setup
 - Copy `.envexample` to `.env` and fill in variables
+- `docker network create caddy`
 - `docker compose up`
 ## Services
 ### Timemachine

@@ -1,4 +1,16 @@
 services:
+  caddy:
+    restart: unless-stopped
+    container_name: caddy
+    ports:
+    - 80:80
+    - 443:443
+    volumes:
+        - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+        - ./caddy/index.html:/usr/share/caddy/index.html
+      networks:
+        - caddy # add other containers onto this network to use dns name
+    
   timemachine:
     restart: unless-stopped
     container_name: timemachine
@@ -17,3 +29,7 @@ services:
     tmpfs:
       - /run/samba
     image: 'mbentley/timemachine:smb'
+# create this first before running the docker-compose - docker network create caddy
+networks:
+  caddy:
+    external: true
