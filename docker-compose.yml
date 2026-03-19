@@ -10,6 +10,7 @@ services:
       - ./caddy/index.html:/usr/share/caddy/index.html
     networks:
       - caddy # add other containers onto this network to use dns name
+    image: caddy:latest
     
   timemachine:
     restart: unless-stopped
