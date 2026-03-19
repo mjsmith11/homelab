@@ -11,7 +11,7 @@
 }
 *.lab.mattsmith.tech {
     tls internal
-    @golinks host go.lab.mattsmith.tech 
+    @golinks host http://go.lab.mattsmith.tech 
         handle @golinks {
             map {path} {redirect-uri} {
                 /gm            https://mail.google.com
