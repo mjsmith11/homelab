@@ -5,7 +5,7 @@
                 root * /usr/share/caddy
                 file_server
         }
-    @golinks host go.lab.mattsmith.tech {   # replace it your web-url root
+    @golinks host go.lab.mattsmith.tech 
         handle @golinks {
             map {path} {redirect-uri} {
                 /gm            https://mail.google.com
@@ -35,5 +35,4 @@
             # code below is to set the default response if the requested shortlink isn't here
             respond "Thas's an unknown short URL ... :("  
         }
-    }
 }
