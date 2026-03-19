@@ -1,5 +1,5 @@
 *.mattsmith.tech {
-    @home host lab.mattsmith.tech
+    @caddy host lab.mattsmith.tech
         handle @caddy {
                 root * /usr/share/caddy
                 file_server
