@@ -1,3 +1,6 @@
+{
+    debug
+}
 *.mattsmith.tech {
     tls internal
     @caddy host lab.mattsmith.tech
@@ -5,6 +8,9 @@
                 root * /usr/share/caddy
                 file_server
         }
+}
+*.lab.mattsmith.tech {
+    tls internal
     @golinks host go.lab.mattsmith.tech 
         handle @golinks {
             map {path} {redirect-uri} {
