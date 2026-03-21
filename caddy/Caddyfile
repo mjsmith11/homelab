@@ -13,7 +13,7 @@
     tls internal
     @pihole host pihole.lab.mattsmith.tech
         handle @pihole {
-                reverse_proxy https://pihole:80 
+                reverse_proxy http://pihole:80 
         }
     @golinks host http://go.lab.mattsmith.tech 
         handle @golinks {
