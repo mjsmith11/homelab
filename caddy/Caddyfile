@@ -48,5 +48,6 @@
         }
 }
 m {
+    tls off
     redir https://mail.google.com
 }
