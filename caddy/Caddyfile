@@ -15,38 +15,76 @@
         handle @pihole {
                 reverse_proxy http://pihole:80 
         }
-    @golinks host http://go.lab.mattsmith.tech 
-        handle @golinks {
-            map {path} {redirect-uri} {
-                /gm            https://mail.google.com
-                /c             https://calendar.google.com
-                /dr            https://drive.google.com
-                /unifi         https://192.168.1.1
-                /a             https://www.amazon.com
-                /emp           https://ira.empower-retirement.com
-                /f             https://facebook.com
-                /i             https://facebook.com
-                /t             https://x.com
-                /od            https://onedrive.live.com
-                /wordle        https://www.nytimes.com/games/wordle/index.html
-                /jeremy        https://1drv.ms/f/c/5867ff3cdb870ab7/Esz5VHe0uX9Jm1POLTTvjvQByPk6X8K7vgK5X_fBpEaBpw?e=c6FKte
-                /pihole        https://pihole.lab.mattsmith.tech
-                /rickrolled    https://www.youtube.com/watch?v=dQw4w9WgXcQ
-                # youtube
-                # github
-                # will add new ones here like the above
-                # ...
-            }
-
-            # this below code is required to actually make the above `map` work
-
-            @hasRedir expression `{redirect-uri} != ""`
-            redir @hasRedir {redirect-uri}
-
-            # code below is to set the default response if the requested shortlink isn't here
-            respond "Thas's an unknown short URL ... :("  
-        }
 }
 http://m {
     redir https://mail.google.com
+}
+
+http://yt {
+    handle / {
+        redir https://youtube.com
+    }
+    handle {
+        redir https://www.youtube.com/results?search_query={path}
+    }
+}
+http://gh {
+    handle / {
+        redir https://github.com
+    }
+    handle {
+        redir https://github.com{uri}
+    }
+}
+
+http://c {
+    redir https://calendar.google.com
+}
+
+http://dr {
+    redir https://drive.google.com
+}
+
+http://u {
+    redir https://192.168.1.1
+}
+
+http://a {
+    redir https://www.amazon.com
+}
+
+http://e {
+    redir https://ira.empower-retirement.com
+}
+
+http://f {
+    redir https://facebook.com
+}
+
+http://i {
+    redir https://instagram.com
+}
+
+http://t {
+    redir https://x.com
+}
+
+http://od {
+    redir https://onedrive.live.com
+}
+
+http://wordle {
+    redir https://www.nytimes.com/games/wordle/index.html
+}
+
+http://jeremy {
+    redir https://1drv.ms/f/c/5867ff3cdb870ab7/Esz5VHe0uX9Jm1POLTTvjvQByPk6X8K7vgK5X_fBpEaBpw?e=c6FKte
+}
+
+http://pihole {
+    redir https://pihole.lab.mattsmith.tech
+}
+
+http://rickroll {
+    redir https://www.youtube.com/watch?v=dQw4w9WgXcQ
 }
