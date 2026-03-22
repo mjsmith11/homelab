@@ -46,3 +46,6 @@
             respond "Thas's an unknown short URL ... :("  
         }
 }
+m {
+    redir https://mail.google.com
+}
