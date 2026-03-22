@@ -1,11 +1,87 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Matt's Homelab</title>
+        <style>
+            body {
+              font-family: sans-serif;
+              background: #f5f5f5;
+              color: #111;
+              padding: 2rem;
+              max-width: 700px;
+              margin: 0 auto;
+            }
+            h1 {
+              font-size: 20px;
+              font-weight: 500;
+              margin-bottom: 1.5rem;
+            }
+            .shortcuts-grid {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 8px;
+            }
+            .shortcut-card {
+              display: flex;
+              align-items: center;
+              gap: 12px;
+              background: #fff;
+              border: 1px solid #e0e0e0;
+              border-radius: 8px;
+              padding: 10px 14px;
+              text-decoration: none;
+              transition: background 0.15s;
+            }
+            .shortcut-card:hover {
+              background: #f0f0f0;
+            }
+            .shortcut-key {
+              font-family: monospace;
+              font-size: 13px;
+              font-weight: 500;
+              background: #f5f5f5;
+              border: 1px solid #ddd;
+              border-radius: 6px;
+              padding: 3px 8px;
+              color: #111;
+              white-space: nowrap;
+              min-width: 48px;
+              text-align: center;
+            }
+            .shortcut-label {
+              font-size: 14px;
+              color: #555;
+            }
+          </style>
     </head>
     <body>
         <h1>Matt's Homelab</h1>
+        <h2>Useful Links</h2>
         <ul>
             <li><a href="https://pihole.lab.mattsmith.tech/admin">Pihole Admin</a></li>
+            <li><a href="https://192.168.1.1">Unifi Admin</a></li>
         </ul>
+
+        <h2>Shortcuts</h2>
+        <div class="shortcuts-grid">
+          <a class="shortcut-card" href="http://m"><span class="shortcut-key">m/</span><span class="shortcut-label">Gmail</span></a>
+          <a class="shortcut-card" href="http://y"><span class="shortcut-key">y/</span><span class="shortcut-label">YouTube</span></a>
+          <a class="shortcut-card" href="http://git"><span class="shortcut-key">git/</span><span class="shortcut-label">GitHub</span></a>
+          <a class="shortcut-card" href="http://c"><span class="shortcut-key">c/</span><span class="shortcut-label">Google Calendar</span></a>
+          <a class="shortcut-card" href="http://dr"><span class="shortcut-key">dr/</span><span class="shortcut-label">Google Drive</span></a>
+          <a class="shortcut-card" href="http://unifi"><span class="shortcut-key">unifi/</span><span class="shortcut-label">UniFi Router</span></a>
+          <a class="shortcut-card" href="http://a"><span class="shortcut-key">a/</span><span class="shortcut-label">Amazon</span></a>
+          <a class="shortcut-card" href="http://e"><span class="shortcut-key">e/</span><span class="shortcut-label">Empower Retirement</span></a>
+          <a class="shortcut-card" href="http://f"><span class="shortcut-key">f/</span><span class="shortcut-label">Facebook</span></a>
+          <a class="shortcut-card" href="http://i"><span class="shortcut-key">i/</span><span class="shortcut-label">Instagram</span></a>
+          <a class="shortcut-card" href="http://t"><span class="shortcut-key">t/</span><span class="shortcut-label">X (Twitter)</span></a>
+          <a class="shortcut-card" href="http://od"><span class="shortcut-key">od/</span><span class="shortcut-label">OneDrive</span></a>
+          <a class="shortcut-card" href="http://wordle"><span class="shortcut-key">wordle/</span><span class="shortcut-label">Wordle</span></a>
+          <a class="shortcut-card" href="http://jeremy"><span class="shortcut-key">jeremy/</span><span class="shortcut-label">Jeremy Files</span></a>
+          <a class="shortcut-card" href="http://pihole"><span class="shortcut-key">pihole/</span><span class="shortcut-label">Pi-hole Admin</span></a>
+          <a class="shortcut-card" href="http://rickroll"><span class="shortcut-key">rickroll/</span><span class="shortcut-label">Never Gonna Give You Up</span></a>
+        </div>
     </body>
 </html>
