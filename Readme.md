@@ -25,3 +25,31 @@ Server for mac backups. Note: It's currently hardcoded to 1 TB limit for backup 
 1. Navigate to Time Machine in settings
 1. Add a backup target
 1. Choose TimeMachine and follow the prompts.
+
+### Caddy
+Web server doing reverse proxy for lab services and redirects for shortcuts
+#### Prereqs
+- Firewall ports 80 and 443 open
+- Nothing on host listening on 80 and 443 on host
+- Static ip on host
+- Domain registered through cloudflare
+- Local DNS available
+
+#### Additional Setup
+1. Configure to pull certs (details TODO)
+1. Add local dns record to point domain to the server's ip
+1. Add local dns records for everything that is reverse proxied
+1. Add local dns records for everything all url shortcuts
+
+### Pihole
+DNS Server and Ad filtering
+#### Prereqs
+- Firewall port 53 open
+- Nothing listening on port 53 of host (see https://www.turek.dev/posts/disable-systemd-resolved-cleanly/)
+- Static IP
+
+## Things to consider for new services
+- Does it need reverse proxy
+- Should it backup data
+- Should it be added to index.html
+- Does it need a redirect/shortcut in Caddyfile
