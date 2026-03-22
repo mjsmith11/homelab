@@ -21,20 +21,10 @@ http://m {
 }
 
 http://yt {
-    handle / {
-        redir https://youtube.com
-    }
-    handle {
-        redir https://www.youtube.com/results?search_query={path}
-    }
+    redir https://youtube.com
 }
 http://gh {
-    handle / {
-        redir https://github.com
-    }
-    handle {
-        redir https://github.com{uri}
-    }
+    redir https://github.com
 }
 
 http://c {
@@ -45,7 +35,7 @@ http://dr {
     redir https://drive.google.com
 }
 
-http://u {
+http://unifi {
     redir https://192.168.1.1
 }
 
@@ -82,7 +72,7 @@ http://jeremy {
 }
 
 http://pihole {
-    redir https://pihole.lab.mattsmith.tech
+    redir https://pihole.lab.mattsmith.tech/admin
 }
 
 http://rickroll {
