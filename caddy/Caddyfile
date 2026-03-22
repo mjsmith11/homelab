@@ -20,10 +20,10 @@ http://m {
     redir https://mail.google.com
 }
 
-http://yt {
+http://y {
     redir https://youtube.com
 }
-http://gh {
+http://git {
     redir https://github.com
 }
 
