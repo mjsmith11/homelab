@@ -1,6 +1,3 @@
-{
-    debug
-}
 *.mattsmith.tech {
     tls internal
     @caddy host lab.mattsmith.tech
