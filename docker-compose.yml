@@ -52,7 +52,7 @@ services:
     # Volumes store your data between container upgrades
     volumes:
       # For persisting Pi-hole's databases and common configuration file
-      - './pihole/etc-pihole:/etc/pihole'
+      - 'pihole_data:/etc/pihole'
     restart: unless-stopped
     networks:
       - caddy
@@ -60,6 +60,7 @@ services:
 volumes:
   caddy_data:
   caddy_config:
+  pihole_data:
 # create this first before running the docker-compose - docker network create caddy
 networks:
   caddy:
