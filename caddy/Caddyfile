@@ -1,5 +1,11 @@
+{
+    # Optional: use staging CA while testing to avoid rate limits
+    acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+}
 *.mattsmith.tech {
-    tls internal
+    tls {
+        dns cloudflare {env.CF_API_TOKEN}
+    }
     @caddy host lab.mattsmith.tech
         handle @caddy {
                 root * /usr/share/caddy
@@ -7,7 +13,9 @@
         }
 }
 *.lab.mattsmith.tech {
-    tls internal
+    tls {
+        dns cloudflare {env.CF_API_TOKEN}
+    }
     @pihole host pihole.lab.mattsmith.tech
         handle @pihole {
                 reverse_proxy http://pihole:80 

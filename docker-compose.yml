@@ -1,5 +1,6 @@
 services:
   caddy:
+    build: ./caddy
     restart: unless-stopped
     container_name: caddy
     ports:
@@ -10,9 +11,10 @@ services:
       - ./caddy/index.html:/usr/share/caddy/index.html
       - caddy_data:/data
       - caddy_config:/config
+    environment:
+      - CF_API_TOKEN=${CF_API_TOKEN}
     networks:
       - caddy # add other containers onto this network to use dns name
-    image: caddy:latest
     
   timemachine:
     restart: unless-stopped
