@@ -35,11 +35,21 @@ Web server doing reverse proxy for lab services and redirects for shortcuts
 - Domain registered through cloudflare
 - Local DNS available
 
+#### Environment Variables
+- CF_API_TOKEN - Cloudflare API token with permissions described below
+
 #### Additional Setup
-1. Configure to pull certs (details TODO)
+1. Navigate to cloudflare API Token UI **My Profile → API Tokens → Create Token**
+1. Create a token: Use the **Edit zone DNS** template, scoped to your specific zone (domain). The token needs these permissions:
+    - `Zone / Zone / Read`
+    - `Zone / DNS / Edit`
+1. Paste Token into .env file
 1. Add local dns record to point domain to the server's ip
 1. Add local dns records for everything that is reverse proxied
 1. Add local dns records for everything all url shortcuts
+
+#### Additional Notes
+- This service is configured to build from source in the docker compose.  It may need explicitly rebuilt at times by passing `--build` to `docker compose up`
 
 ### Pihole
 DNS Server and Ad filtering
