@@ -1,5 +1,5 @@
 services:
-  volume-backuop:
+  volume-backup:
     build: ./volume-backup
     restart: unless-stopped
     container_name: volume-backup
