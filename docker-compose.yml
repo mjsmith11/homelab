@@ -1,4 +1,13 @@
 services:
+  volume-backuop:
+    build: ./volume-backup
+    restart: unless-stopped
+    container_name: volume-backup
+    volumes:
+      - ./volume-backup/rclone.conf:/root/.config/rclone/rclone.conf
+      - caddy_data:/data/caddy_data
+      - caddy_config:/data/caddy_config
+      - pihole_data:/data/pihole_data
   caddy:
     build: ./caddy
     restart: unless-stopped

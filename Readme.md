@@ -2,7 +2,6 @@
 This repo contains the resources and instructions for my homelab setup centered around docker-compose.yml 
 ## Basic Setup
 - Copy `.envexample` to `.env` and fill in variables
-- `docker network create caddy`
 - `docker compose up`
 ## Services
 ### Timemachine
@@ -58,8 +57,29 @@ DNS Server and Ad filtering
 - Nothing listening on port 53 of host (see https://www.turek.dev/posts/disable-systemd-resolved-cleanly/)
 - Static IP
 
+### Volume Backup
+Runs a cron job daily at 2 am EST to copy docker volume contents to onedrive and delete backups more than 7 days (may change to 30) old
+#### Prereqs
+- Onedrive account with folder `/Documents/Homelab/Backups`
+#### Additional Setup
+On your host machine (not in Docker yet), run:
+`rclone config`
+- Choose n (new remote)
+- Name: onedrive
+- Storage: OneDrive
+- Follow login flow
+This creates:
+`~/.config/rclone/rclone.conf`
+
+Copy this file to the `volume-backup` directory before creating the container.
+
+#### Additional Notes
+- Keep rclone.conf safe. It contains an auth token
+- To test without waiting for the cron job to fire `docker exec -it volume-backup /app/backup.sh`
+
 ## Things to consider for new services
 - Does it need reverse proxy
 - Should it backup data
 - Should it be added to index.html
 - Does it need a redirect/shortcut in Caddyfile
+
