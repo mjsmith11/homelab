@@ -19,6 +19,6 @@ echo "Removing local temp file..."
 rm "$TMP_DIR/$ARCHIVE_NAME"
 
 echo "Deleting remote files older than 7 days..."
-# rclone delete onedrive:/Documents/Homelab/Backups --min-age 7d
+rclone delete onedrive:/Documents/Homelab/Backups --min-age 7d
 
 echo "Done."
