@@ -10,9 +10,7 @@ ARCHIVE_NAME="backup-$DATE.zip"
 mkdir -p $TMP_DIR
 
 echo "Creating archive..."
-docker compose down budget-backend
 zip -r "$TMP_DIR/$ARCHIVE_NAME" "$SOURCE_DIR"
-docker compose up -d budget-backend
 
 echo "Uploading to OneDrive..."
 rclone copy "$TMP_DIR/$ARCHIVE_NAME" onedrive:/Documents/Homelab/Backups
