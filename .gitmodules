@@ -1,0 +1,3 @@
+[submodule "budget-app"]
+	path = budget-app
+	url = git@github.com:mjsmith11/budget-app.git
