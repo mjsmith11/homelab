@@ -71,6 +71,8 @@ services:
   budget-backend:
     container_name: budget-backend
     build: ./budget-app/backend
+    environment:
+      - DB_PATH=/app/data/budget.db
     volumes:
       - budget_data:/app/data
     restart: unless-stopped
