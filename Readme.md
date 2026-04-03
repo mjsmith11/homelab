@@ -73,6 +73,9 @@ This creates:
 
 Copy this file to the `volume-backup` directory before creating the container.
 
+### Budget
+Two containers for the front end and back end of a custom budgeting app.  Should just run.
+
 #### Additional Notes
 - Keep rclone.conf safe. It contains an auth token
 - To test without waiting for the cron job to fire `docker exec -it volume-backup /app/backup.sh`
@@ -82,4 +85,5 @@ Copy this file to the `volume-backup` directory before creating the container.
 - Should it backup data
 - Should it be added to index.html
 - Does it need a redirect/shortcut in Caddyfile
+- Documentation
 

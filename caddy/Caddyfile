@@ -20,6 +20,10 @@
         handle @pihole {
                 reverse_proxy http://pihole:80 
         }
+    @budget host budget.lab.mattsmith.tech
+        handle @budget {
+                reverse_proxy http://budget-frontend:80 
+        }
 }
 http://m {
     redir https://mail.google.com
@@ -78,6 +82,10 @@ http://jeremy {
 
 http://pihole {
     redir https://pihole.lab.mattsmith.tech/admin
+}
+
+http://budget {
+    redir https://budget.lab.mattsmith.tech/admin
 }
 
 http://rickroll {

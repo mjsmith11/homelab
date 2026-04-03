@@ -8,6 +8,7 @@ services:
       - caddy_data:/data/caddy_data
       - caddy_config:/data/caddy_config
       - pihole_data:/data/pihole_data
+      - budget_data:/data/budget_data
   caddy:
     build: ./caddy
     restart: unless-stopped
@@ -67,13 +68,33 @@ services:
     restart: unless-stopped
     networks:
       - caddy
+  budget-backend:
+    container_name: budget-backend
+    build: ./budget-app/backend
+    volumes:
+      - budget_data:/app/data
+    restart: unless-stopped
+    networks:
+      - budget
+  budget-frontend:
+    container_name: budget-frontend
+    restart: unless-stopped
+    build: ./budget-app/frontend
+    depends_on:
+      - budget-backend
+    networks:
+      - caddy
+      - budget
 
 volumes:
   caddy_data:
   caddy_config:
   pihole_data:
+  budget_data:
 # create this first before running the docker-compose - docker network create caddy
 networks:
   caddy:
+    driver: bridge
+  budget:
     driver: bridge
     #external: true
