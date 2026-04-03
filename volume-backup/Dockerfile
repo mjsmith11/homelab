@@ -7,7 +7,8 @@ RUN apk add --no-cache \
     curl \
     rclone \
     ca-certificates \
-    busybox-suid
+    busybox-suid \
+    sqlite
 
 # Set timezone (optional)
 ENV TZ=America/Indiana/Indianapolis
