@@ -85,7 +85,7 @@ http://pihole {
 }
 
 http://budget {
-    redir https://budget.lab.mattsmith.tech/admin
+    redir https://budget.lab.mattsmith.tech
 }
 
 http://rickroll {
