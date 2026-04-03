@@ -73,12 +73,13 @@ This creates:
 
 Copy this file to the `volume-backup` directory before creating the container.
 
-### Budget
-Two containers for the front end and back end of a custom budgeting app.  Should just run.
-
 #### Additional Notes
 - Keep rclone.conf safe. It contains an auth token
 - To test without waiting for the cron job to fire `docker exec -it volume-backup /app/backup.sh`
+
+
+### Budget
+Two containers for the front end and back end of a custom budgeting app.  Should just run with nothing additional.
 
 ## Things to consider for new services
 - Does it need reverse proxy
