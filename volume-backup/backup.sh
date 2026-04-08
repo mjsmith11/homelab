@@ -24,7 +24,7 @@ rclone copy "$TMP_DIR/$ARCHIVE_NAME" onedrive:/Documents/Homelab/Backups
 echo "Removing local temp files..."
 rm "$TMP_DIR/$ARCHIVE_NAME" "$TMP_DIR/gravity.db" "$TMP_DIR/pihole-FTL.db" "$TMP_DIR/budget.db"
 
-echo "Deleting remote files older than 7 days..."
+echo "Deleting remote files older than 30 days..."
 rclone delete onedrive:/Documents/Homelab/Backups --min-age 30d
 
 echo "Done."
