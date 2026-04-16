@@ -24,6 +24,10 @@
         handle @budget {
                 reverse_proxy http://budget-frontend:80 
         }
+    @inkypi host inkypi.lab.mattsmith.tech
+        handle @inkypi {
+                reverse_proxy http://inky.lab.mattsmith.tech 
+        }
 }
 http://m {
     redir https://mail.google.com
