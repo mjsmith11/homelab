@@ -6,92 +6,179 @@
     tls {
         dns cloudflare {env.CF_API_TOKEN}
     }
-    @caddy host lab.mattsmith.tech
+    @allowed remote_ip 192.168.1.0/24
+    handle @allowed {
+        @caddy host lab.mattsmith.tech
         handle @caddy {
-                root * /usr/share/caddy
-                file_server
+            root * /usr/share/caddy
+            file_server
         }
+    }
+    handle {
+        respond 403
+    }
 }
 *.lab.mattsmith.tech {
     tls {
         dns cloudflare {env.CF_API_TOKEN}
     }
-    @pihole host pihole.lab.mattsmith.tech
+    @allowed remote_ip 192.168.1.0/24
+    @jellyfin_allowed {
+        host jellyfin.lab.mattsmith.tech
+        remote_ip 192.168.1.0/24 192.168.20.0/24
+    }
+    handle @jellyfin_allowed {
+        reverse_proxy http://jellyfin:8096
+    }
+    handle @allowed {
+        @pihole host pihole.lab.mattsmith.tech
         handle @pihole {
-                reverse_proxy http://pihole:80 
+            reverse_proxy http://pihole:80
         }
-    @budget host budget.lab.mattsmith.tech
+        @budget host budget.lab.mattsmith.tech
         handle @budget {
-                reverse_proxy http://budget-frontend:80 
+            reverse_proxy http://budget-frontend:80
         }
-    @inkypi host inkypi.lab.mattsmith.tech
+        @inkypi host inkypi.lab.mattsmith.tech
         handle @inkypi {
-                reverse_proxy http://inky.lab.mattsmith.tech 
+            reverse_proxy http://inky.lab.mattsmith.tech
         }
+    }
+    handle {
+        respond 403
+    }
 }
 http://m {
-    redir https://mail.google.com
+    @allowed remote_ip 192.168.1.0/24
+    handle @allowed {
+        redir https://mail.google.com
+    }
+    respond 403
 }
 
 http://y {
-    redir https://youtube.com
+    @allowed remote_ip 192.168.1.0/24
+    handle @allowed {
+        redir https://youtube.com
+    }
+    respond 403
 }
 http://git {
-    redir https://github.com
+    @allowed remote_ip 192.168.1.0/24
+    handle @allowed {
+        redir https://github.com
+    }
+    respond 403
 }
 
 http://c {
-    redir https://calendar.google.com
+    @allowed remote_ip 192.168.1.0/24
+    handle @allowed {
+        redir https://calendar.google.com
+    }
+    respond 403
 }
 
 http://dr {
-    redir https://drive.google.com
+    @allowed remote_ip 192.168.1.0/24
+    handle @allowed {
+        redir https://drive.google.com
+    }
+    respond 403
 }
 
 http://unifi {
-    redir https://192.168.1.1
+    @allowed remote_ip 192.168.1.0/24
+    handle @allowed {
+        redir https://192.168.1.1
+    }
+    respond 403
 }
 
 http://a {
-    redir https://www.amazon.com
+    @allowed remote_ip 192.168.1.0/24
+    handle @allowed {
+        redir https://www.amazon.com
+    }
+    respond 403
 }
 
 http://e {
-    redir https://ira.empower-retirement.com
+    @allowed remote_ip 192.168.1.0/24
+    handle @allowed {
+        redir https://ira.empower-retirement.com
+    }
+    respond 403
 }
 
 http://f {
-    redir https://facebook.com
+    @allowed remote_ip 192.168.1.0/24
+    handle @allowed {
+        redir https://facebook.com
+    }
+    respond 403
 }
 
 http://i {
-    redir https://instagram.com
+    @allowed remote_ip 192.168.1.0/24
+    handle @allowed {
+        redir https://instagram.com
+    }
+    respond 403
 }
 
 http://t {
-    redir https://x.com
+    @allowed remote_ip 192.168.1.0/24
+    handle @allowed {
+        redir https://x.com
+    }
+    respond 403
 }
 
 http://od {
-    redir https://onedrive.live.com
+    @allowed remote_ip 192.168.1.0/24
+    handle @allowed {
+        redir https://onedrive.live.com
+    }
+    respond 403
 }
 
 http://wordle {
-    redir https://www.nytimes.com/games/wordle/index.html
+    @allowed remote_ip 192.168.1.0/24
+    handle @allowed {
+        redir https://www.nytimes.com/games/wordle/index.html
+    }
+    respond 403
 }
 
 http://jeremy {
-    redir https://1drv.ms/f/c/5867ff3cdb870ab7/Esz5VHe0uX9Jm1POLTTvjvQByPk6X8K7vgK5X_fBpEaBpw?e=c6FKte
+    @allowed remote_ip 192.168.1.0/24
+    handle @allowed {
+        redir https://1drv.ms/f/c/5867ff3cdb870ab7/Esz5VHe0uX9Jm1POLTTvjvQByPk6X8K7vgK5X_fBpEaBpw?e=c6FKte
+    }
+    respond 403
 }
 
 http://pihole {
-    redir https://pihole.lab.mattsmith.tech/admin
+    @allowed remote_ip 192.168.1.0/24
+    handle @allowed {
+        redir https://pihole.lab.mattsmith.tech/admin
+    }
+    respond 403
 }
 
 http://budget {
-    redir https://budget.lab.mattsmith.tech
+    @allowed remote_ip 192.168.1.0/24
+    handle @allowed {
+        redir https://budget.lab.mattsmith.tech
+    }
+    respond 403
 }
 
 http://rickroll {
-    redir https://www.youtube.com/watch?v=dQw4w9WgXcQ
+    @allowed remote_ip 192.168.1.0/24
+    handle @allowed {
+        redir https://www.youtube.com/watch?v=dQw4w9WgXcQ
+    }
+    respond 403
 }

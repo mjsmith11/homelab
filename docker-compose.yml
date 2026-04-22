@@ -88,11 +88,35 @@ services:
       - caddy
       - budget
 
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Indiana/Indianapolis
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    volumes:
+      - jellyfin_config:/config
+      - ${JELLYFIN_MEDIA_PATH}:/data/media:ro
+    networks:
+      - caddy
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
 volumes:
   caddy_data:
   caddy_config:
   pihole_data:
   budget_data:
+  jellyfin_config:
 # create this first before running the docker-compose - docker network create caddy
 networks:
   caddy:

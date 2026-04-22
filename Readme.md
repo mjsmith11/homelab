@@ -81,6 +81,30 @@ Copy this file to the `volume-backup` directory before creating the container.
 ### Budget
 Two containers for the front end and back end of a custom budgeting app.  Should just run with nothing additional.
 
+### Jellyfin
+Media server with NVIDIA GPU hardware acceleration for transcoding. Media is mounted read-only.
+
+#### Prereqs
+- NVIDIA GPU on the host
+- [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) installed on the host
+  - After install, restart the Docker daemon: `sudo systemctl restart docker`
+- A directory to serve as the media root (can be empty for initial PoC)
+
+#### Environment Variables
+- `JELLYFIN_MEDIA_PATH` - path on the host to mount as the media library (mounted read-only)
+
+#### Additional Setup
+1. Add `JELLYFIN_MEDIA_PATH=/path/to/media` to `.env`
+1. Add a local DNS record pointing `jellyfin.lab.mattsmith.tech` to the server's IP
+1. `docker compose up -d jellyfin`
+1. Navigate to `https://jellyfin.lab.mattsmith.tech` and complete the setup wizard
+1. When adding a media library, point it to `/data/media` (or a subdirectory within it)
+
+#### Enabling Hardware Transcoding
+1. In Jellyfin, go to **Dashboard → Playback → Transcoding**
+1. Set **Hardware acceleration** to `Nvidia NVENC`
+1. Enable the codec options you want (H.264, H.265/HEVC, etc.)
+
 ## Things to consider for new services
 - Does it need reverse proxy
 - Should it backup data
