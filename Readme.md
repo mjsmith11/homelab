@@ -105,6 +105,47 @@ Media server with NVIDIA GPU hardware acceleration for transcoding. Media is mou
 1. Set **Hardware acceleration** to `Nvidia NVENC`
 1. Enable the codec options you want (H.264, H.265/HEVC, etc.)
 
+## Hardcoded Setup-Specific Configuration
+
+This repo contains values specific to this homelab that must be changed when adapting it for a different environment.
+
+### Domain (`mattsmith.tech`)
+Every service URL and TLS certificate is tied to `mattsmith.tech`. Replace all occurrences in:
+- `caddy/Caddyfile` — wildcard cert blocks (`*.mattsmith.tech`, `*.lab.mattsmith.tech`) and all service hostnames
+- `caddy/index.html` — all href links in the Useful Links section
+
+### LAN Subnets (`192.168.1.0/24`, `192.168.20.0/24`)
+`caddy/Caddyfile` uses `remote_ip` matchers to restrict access to these subnets. `192.168.1.0/24` is the primary LAN and `192.168.20.0/24` is a second network that is also allowed to reach Jellyfin (e.g. a media VLAN). Update both to match your network.
+
+### UniFi Router IP (`192.168.1.1`)
+Hardcoded in two places:
+- `caddy/Caddyfile` — `http://unifi` redirect target
+- `caddy/index.html` — UniFi Admin link href
+
+### InkyPi Internal Hostname (`inky.lab.mattsmith.tech`)
+`caddy/Caddyfile` proxies `inkypi.lab.mattsmith.tech` to `http://inky.lab.mattsmith.tech`. This is a device-specific internal DNS name that must match whatever hostname your InkyPi device has on your network.
+
+### Timezone (`America/Indiana/Indianapolis`)
+Set for both Pihole and Jellyfin in `docker-compose.yml`. Update the `TZ` environment variable on both services to match your timezone.
+
+### Pihole Web Password
+`FTLCONF_webserver_api_password: '2get2pihole'` is hardcoded in `docker-compose.yml`. This should be moved to `.env` as `PIHOLE_PASSWORD` and referenced as `${PIHOLE_PASSWORD}`.
+
+### Jellyfin User/Group IDs (`PUID=1000`, `PGID=1000`)
+Set in `docker-compose.yml` for the `jellyfin` service. These should match the UID/GID of the user that owns your media files on the host. Run `id` on the host to check.
+
+### NVIDIA GPU (Jellyfin)
+`docker-compose.yml` reserves an NVIDIA GPU for the Jellyfin container using the `nvidia` driver and sets `NVIDIA_VISIBLE_DEVICES=all`. This requires an NVIDIA GPU and the NVIDIA Container Toolkit on the host. Remove or replace the `deploy.resources.reservations.devices` block and the `NVIDIA_*` environment variables if using a different GPU vendor or no hardware transcoding.
+
+### Volume Backup — OneDrive Path
+`volume-backup/backup.sh` uploads to `onedrive:/Documents/Homelab/Backups`. Update this path and the `rclone` remote name (`onedrive`) to match your rclone configuration.
+
+### Volume Backup — Databases
+`volume-backup/backup.sh` explicitly backs up `gravity.db`, `pihole-FTL.db`, and `budget.db`. Add or remove entries here if you add or remove services with persistent SQLite databases.
+
+### "Jeremy Files" Shortcut
+`caddy/Caddyfile` (`http://jeremy`) and `caddy/index.html` contain a personal OneDrive share link. Replace or remove this shortcut.
+
 ## Things to consider for new services
 - Does it need reverse proxy
 - Should it backup data
