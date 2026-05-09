@@ -38,7 +38,7 @@ services:
     environment:
       - TM_USERNAME=timemachine
       - "PASSWORD=${TM_PASSWORD}"
-      - 'VOLUME_SIZE_LIMIT=1 T'
+      - 'VOLUME_SIZE_LIMIT=2 T'
     volumes:
       - "${TM_DATA_PATH}:/opt/timemachine"
     tmpfs:

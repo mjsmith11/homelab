@@ -5,7 +5,7 @@ This repo contains the resources and instructions for my homelab setup centered 
 - `docker compose up`
 ## Services
 ### Timemachine
-Server for mac backups. Note: It's currently hardcoded to 1 TB limit for backup data.
+Server for mac backups. Note: It's currently hardcoded to 2 TB limit for backup data.
 #### Prereqs
 - avahi-daemon not running on host (`sudo systemctl stop avahi-daemon && sudo systemctl disable avihi-daemon`)
 - smbd not running on host (`sudo systemctl stop smbd && sudo systemctl disable smbd`)
