@@ -26,6 +26,26 @@ services:
     networks:
       - caddy # add other containers onto this network to use dns name
     
+  samba:
+    image: dperson/samba
+    restart: unless-stopped
+    container_name: samba
+    ports:
+      - 1137:137/udp
+      - 1138:138/udp
+      - 1139:139
+      - 1445:445
+    environment:
+      - "USERID=1000"
+      - "GROUPID=1000"
+    volumes:
+      - "${SAMBA_SHARE_PATH}:/share"
+    command: >
+      -u "samba;${SAMBA_PASSWORD}"
+      -s "share;/share;yes;no;no;samba"
+    tmpfs:
+      - /run/samba
+
   timemachine:
     restart: unless-stopped
     container_name: timemachine

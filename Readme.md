@@ -25,6 +25,26 @@ Server for mac backups. Note: It's currently hardcoded to 2 TB limit for backup 
 1. Add a backup target
 1. Choose TimeMachine and follow the prompts.
 
+### Samba
+General-purpose SMB file share. Runs on non-standard ports (1137/1138/1139/1445) to avoid conflicts with the Timemachine service.
+
+#### Prereqs
+- Firewall ports 1137/UDP, 1138/UDP, 1139/TCP, 1445/TCP open
+- smbd/nmbd not running on host (see Timemachine prereqs — same requirement)
+
+#### Environment Variables
+- `SAMBA_SHARE_PATH` - path on the host to share
+- `SAMBA_PASSWORD` - password for the `samba` user
+
+#### Additional Setup
+1. Add `SAMBA_SHARE_PATH` and `SAMBA_PASSWORD` to `.env`
+1. `docker compose up -d samba`
+
+#### Connecting
+- **Mac Finder:** `cmd+K` → `smb://<host>:1445/share`
+- **Linux:** `mount -t cifs //<host>/share /mnt/point -o port=1445,username=samba`
+- **Windows:** Non-standard SMB ports require a registry change — consider using a different service for Windows clients
+
 ### Caddy
 Web server doing reverse proxy for lab services and redirects for shortcuts
 #### Prereqs

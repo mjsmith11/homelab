@@ -4,3 +4,6 @@ TM_DATA_PATH=/path/to/tm/data
 CF_API_TOKEN=your_token_here
 
 JELLYFIN_MEDIA_PATH=/path/to/media
+
+SAMBA_SHARE_PATH=/path/to/share
+SAMBA_PASSWORD=changeme
