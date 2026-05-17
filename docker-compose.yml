@@ -40,9 +40,9 @@ services:
       - "GROUPID=1000"
     volumes:
       - "${SAMBA_SHARE_PATH}:/share"
+      - "./samba/smb.conf:/etc/samba/smb.conf:ro"
     command: >
       -u "samba;${SAMBA_PASSWORD}"
-      -s "share;/share;yes;no;no;samba"
     tmpfs:
       - /run/samba
 
