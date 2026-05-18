@@ -45,8 +45,6 @@ services:
             browseable = yes
             read only = no
             guest ok = yes
-            force user = nobody
-            force group = nogroup
             vfs objects = catia fruit
             fruit:metadata = netatalk
             fruit:model = MacSamba
