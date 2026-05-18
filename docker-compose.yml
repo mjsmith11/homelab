@@ -27,7 +27,7 @@ services:
       - caddy # add other containers onto this network to use dns name
     
   samba:
-    build: ./samba
+    image: ghcr.io/servercontainers/samba
     restart: unless-stopped
     container_name: samba
     ports:
