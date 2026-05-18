@@ -60,6 +60,8 @@ services:
             fruit:aapl = yes
             fruit:model = MacSamba
             fruit:posix_rename = yes
+            fruit:metadata = netatalk
+            fruit:resource = xattr
             oplocks = no
             level2 oplocks = no
             strict locking = no
