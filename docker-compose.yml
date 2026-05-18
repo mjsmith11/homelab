@@ -36,15 +36,15 @@ services:
       - 1139:139
       - 1445:445
     environment:
-      SAMBA_CONF_LOG_LEVEL: "3"
-      SAMBA_CONF_MAP_TO_GUEST: Bad User
+      SAMBA_CONF_LOG_LEVEL: "1"
       SAMBA_CONF_SERVER_SIGNING: auto
+      ACCOUNT_samba: ${SAMBA_PASSWORD}
       SAMBA_VOLUME_CONFIG_share: |
         [share]
             path = /share
             browseable = yes
             read only = no
-            guest ok = yes
+            valid users = samba
             vfs objects = catia fruit
             fruit:metadata = netatalk
             fruit:model = MacSamba
