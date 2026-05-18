@@ -27,7 +27,7 @@ services:
       - caddy # add other containers onto this network to use dns name
     
   samba:
-    image: dperson/samba
+    build: ./samba
     restart: unless-stopped
     container_name: samba
     ports:
@@ -35,14 +35,9 @@ services:
       - 1138:138/udp
       - 1139:139
       - 1445:445
-    environment:
-      - "USERID=1000"
-      - "GROUPID=1000"
     volumes:
       - "${SAMBA_SHARE_PATH}:/share"
       - "./samba/smb.conf:/etc/samba/smb.conf:ro"
-    command: >
-      -u "samba;${SAMBA_PASSWORD}"
     tmpfs:
       - /run/samba
     sysctls:
