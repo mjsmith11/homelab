@@ -45,9 +45,9 @@ services:
             browseable = yes
             read only = no
             valid users = samba
-            vfs objects = catia fruit
-            fruit:metadata = netatalk
             fruit:model = MacSamba
+            fruit:nfs_aces = no
+            fruit:posix_rename = yes
     volumes:
       - "${SAMBA_SHARE_PATH}:/share"
     tmpfs:
