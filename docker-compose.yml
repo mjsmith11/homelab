@@ -36,17 +36,15 @@ services:
       - 1139:139
       - 1445:445
     environment:
-      SAMBA_CONF_LOG_LEVEL: "1"
+      SAMBA_CONF_LOG_LEVEL: "3"
       SAMBA_CONF_MAP_TO_GUEST: Bad User
-      SAMBA_CONF_MIN_PROTOCOL: SMB2
-      SAMBA_CONF_MAX_PROTOCOL: SMB3
-      SAMBA_CONF_VFS_OBJECTS: catia fruit
       SAMBA_VOLUME_CONFIG_share: |
         [share]
             path = /share
             browseable = yes
             read only = no
             guest ok = yes
+            vfs objects = catia fruit
             fruit:aapl = yes
             fruit:metadata = netatalk
             fruit:model = MacSamba
