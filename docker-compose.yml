@@ -41,6 +41,7 @@ services:
       SAMBA_CONF_SOCKET_OPTIONS: TCP_NODELAY IPTOS_LOWDELAY SO_KEEPALIVE
       SAMBA_CONF_DEAD_TIME: "0"
       SAMBA_CONF_KEEPALIVE: "60"
+      SAMBA_CONF_MAX_PROTOCOL: SMB2
       ACCOUNT_samba: ${SAMBA_PASSWORD}
       SAMBA_VOLUME_CONFIG_share: |
         [share]
@@ -48,11 +49,10 @@ services:
             browseable = yes
             read only = no
             valid users = samba
-            fruit:model = MacSamba
-            fruit:nfs_aces = no
-            fruit:posix_rename = yes
+            vfs objects = catia
             oplocks = no
             level2 oplocks = no
+            strict locking = no
     volumes:
       - "${SAMBA_SHARE_PATH}:/share"
     tmpfs:
