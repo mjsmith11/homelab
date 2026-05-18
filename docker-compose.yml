@@ -52,6 +52,9 @@ services:
             fruit:model = MacSamba
             fruit:nfs_aces = no
             fruit:posix_rename = yes
+            oplocks = no
+            level2 oplocks = no
+            kernel oplocks = no
     volumes:
       - "${SAMBA_SHARE_PATH}:/share"
     tmpfs:
