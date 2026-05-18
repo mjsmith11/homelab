@@ -41,7 +41,6 @@ services:
       SAMBA_CONF_SOCKET_OPTIONS: TCP_NODELAY IPTOS_LOWDELAY SO_KEEPALIVE
       SAMBA_CONF_DEAD_TIME: "0"
       SAMBA_CONF_KEEPALIVE: "60"
-      SAMBA_CONF_USE_SENDFILE: "yes"
       ACCOUNT_samba: ${SAMBA_PASSWORD}
       SAMBA_VOLUME_CONFIG_share: |
         [share]
@@ -54,7 +53,6 @@ services:
             fruit:posix_rename = yes
             oplocks = no
             level2 oplocks = no
-            kernel oplocks = no
     volumes:
       - "${SAMBA_SHARE_PATH}:/share"
     tmpfs:
