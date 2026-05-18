@@ -38,12 +38,16 @@ services:
     environment:
       SAMBA_CONF_LOG_LEVEL: "3"
       SAMBA_CONF_MAP_TO_GUEST: Bad User
+      SAMBA_CONF_SERVER_SIGNING: auto
       SAMBA_VOLUME_CONFIG_share: |
         [share]
             path = /share
             browseable = yes
             read only = no
             guest ok = yes
+            vfs objects = catia fruit
+            fruit:metadata = netatalk
+            fruit:model = MacSamba
     volumes:
       - "${SAMBA_SHARE_PATH}:/share"
     tmpfs:
