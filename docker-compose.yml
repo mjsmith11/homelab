@@ -38,10 +38,15 @@ services:
     environment:
       SAMBA_CONF_LOG_LEVEL: "1"
       SAMBA_CONF_SERVER_SIGNING: auto
-      SAMBA_CONF_SOCKET_OPTIONS: TCP_NODELAY IPTOS_LOWDELAY SO_KEEPALIVE
+      SAMBA_CONF_SOCKET_OPTIONS: "TCP_NODELAY IPTOS_LOWDELAY SO_KEEPALIVE SO_RCVBUF=131072 SO_SNDBUF=131072"
       SAMBA_CONF_DEAD_TIME: "0"
       SAMBA_CONF_KEEPALIVE: "60"
-      SAMBA_CONF_MAX_PROTOCOL: SMB2
+      SAMBA_CONF_MIN_PROTOCOL: SMB2
+      SAMBA_CONF_MAX_PROTOCOL: SMB3
+      SAMBA_CONF_READ_RAW: "yes"
+      SAMBA_CONF_WRITE_RAW: "yes"
+      SAMBA_CONF_AIO_READ_SIZE: "1"
+      SAMBA_CONF_AIO_WRITE_SIZE: "1"
       ACCOUNT_samba: ${SAMBA_PASSWORD}
       SAMBA_VOLUME_CONFIG_share: |
         [share]
@@ -49,7 +54,10 @@ services:
             browseable = yes
             read only = no
             valid users = samba
-            vfs objects = catia
+            vfs objects = catia fruit streams_xattr
+            fruit:aapl = yes
+            fruit:model = MacSamba
+            fruit:posix_rename = yes
             oplocks = no
             level2 oplocks = no
             strict locking = no
