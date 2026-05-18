@@ -27,7 +27,7 @@ services:
       - caddy # add other containers onto this network to use dns name
     
   samba:
-    image: ghcr.io/linuxserver/samba:latest
+    image: dperson/samba
     restart: unless-stopped
     container_name: samba
     ports:
@@ -36,12 +36,13 @@ services:
       - 1139:139
       - 1445:445
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Indiana/Indianapolis
+      - "USERID=1000"
+      - "GROUPID=1000"
     volumes:
       - "${SAMBA_SHARE_PATH}:/share"
-      - "./samba/smb.conf:/config/smb.conf"
+      - "./samba/smb.conf:/etc/samba/smb.conf:ro"
+    command: >
+      -u "samba;${SAMBA_PASSWORD}"
     tmpfs:
       - /run/samba
     sysctls:
