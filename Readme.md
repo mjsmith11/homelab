@@ -8,7 +8,7 @@ This repo contains the resources and instructions for my homelab setup centered 
 Server for mac backups. Note: It's currently hardcoded to 2 TB limit for backup data.
 #### Prereqs
 - avahi-daemon not running on host (`sudo systemctl stop avahi-daemon && sudo systemctl disable avihi-daemon`)
-- smbd not running on host (`sudo systemctl stop smbd && sudo systemctl disable smbd`)
+- smbd not bound to port 445 on host — native Samba (see Samba section) runs on 1445 and does not conflict
 - nmbd not running on host (`sudo systemctl stop nmbd && sudo systemctl disable nmbd`)
 - afpd & netatalk not running on host (`sudo systemctl stop netatalk && sudo systemctl disable netatalk`)
 - static ip on host
@@ -26,19 +26,19 @@ Server for mac backups. Note: It's currently hardcoded to 2 TB limit for backup 
 1. Choose TimeMachine and follow the prompts.
 
 ### Samba
-General-purpose SMB file share. Runs on non-standard ports (1137/1138/1139/1445) to avoid conflicts with the Timemachine service.
+General-purpose SMB file share. Runs natively on the host (not Docker) on port 1445 to avoid conflicts with the Timemachine container on port 445. Share path and user are hardcoded in `samba/smb.conf`.
 
 #### Prereqs
-- Firewall ports 1137/UDP, 1138/UDP, 1139/TCP, 1445/TCP open
-- smbd/nmbd not running on host (see Timemachine prereqs — same requirement)
+- Firewall port 1445/TCP open
 
-#### Environment Variables
-- `SAMBA_SHARE_PATH` - path on the host to share
-- `SAMBA_PASSWORD` - password for the `samba` user
-
-#### Additional Setup
-1. Add `SAMBA_SHARE_PATH` and `SAMBA_PASSWORD` to `.env`
-1. `docker compose up -d samba`
+#### Setup
+```bash
+sudo apt install samba samba-vfs-modules
+sudo useradd -M -s /sbin/nologin samba
+sudo smbpasswd -a samba
+sudo cp samba/smb.conf /etc/samba/smb.conf
+sudo systemctl enable --now smbd
+```
 
 #### Connecting
 - **Mac Finder:** `cmd+K` → `smb://<host>:1445/share`

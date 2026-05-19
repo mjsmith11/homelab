@@ -26,28 +26,6 @@ services:
     networks:
       - caddy # add other containers onto this network to use dns name
     
-  samba:
-    image: ghcr.io/servercontainers/samba
-    restart: unless-stopped
-    container_name: samba
-    cap_add:
-      - NET_ADMIN
-    ports:
-      - 1137:137/udp
-      - 1138:138/udp
-      - 1139:139
-      - 1445:445
-    environment:
-      ACCOUNT_samba: ${SAMBA_PASSWORD}
-    volumes:
-      - "${SAMBA_SHARE_PATH}:/share"
-      - "./samba/smb.conf:/etc/samba/smb.conf:ro"
-    tmpfs:
-      - /run/samba
-    sysctls:
-      - net.ipv4.tcp_keepalive_time=15
-      - net.ipv4.tcp_keepalive_intvl=5
-      - net.ipv4.tcp_keepalive_probes=6
   timemachine:
     restart: unless-stopped
     container_name: timemachine
