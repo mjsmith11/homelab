@@ -45,8 +45,8 @@ services:
     tmpfs:
       - /run/samba
     sysctls:
-      - net.ipv4.tcp_keepalive_time=60
-      - net.ipv4.tcp_keepalive_intvl=10
+      - net.ipv4.tcp_keepalive_time=15
+      - net.ipv4.tcp_keepalive_intvl=5
       - net.ipv4.tcp_keepalive_probes=6
   timemachine:
     restart: unless-stopped
