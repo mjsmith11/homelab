@@ -125,6 +125,28 @@ Media server with NVIDIA GPU hardware acceleration for transcoding. Media is mou
 1. Set **Hardware acceleration** to `Nvidia NVENC`
 1. Enable the codec options you want (H.264, H.265/HEVC, etc.)
 
+### Tradebot
+Long-only, paper-first trading bot for US stocks (Alpaca) and Polymarket, with a web dashboard and backtester. Source lives in the `tradebot` git submodule. Runs fully keyless by default (synthetic market data + simulated fills) — no credentials required to try it out.
+
+#### Prereqs
+- `git submodule update --init tradebot` to check out the source (only needed once, or after the submodule pointer changes)
+- Local DNS record for `tradebot.lab.mattsmith.tech`
+
+#### Environment Variables
+- `TRADEBOT_DASHBOARD_PASSWORD` - dashboard login password. Blank disables auth (trusted-LAN only)
+- `TRADEBOT_ALPACA_API_KEY` / `TRADEBOT_ALPACA_API_SECRET` - Alpaca paper-trading keys. Leave blank to run keyless
+- `TRADEBOT_POLYMARKET_PRIVATE_KEY` - wallet private key, only needed for live Polymarket trading
+- `TRADEBOT_CONFIRM_LIVE` - hard gate for live trading; the dashboard live toggle stays disabled unless this is exactly `true`
+
+#### Additional Setup
+1. Add a local DNS record pointing `tradebot.lab.mattsmith.tech` to the server's IP
+1. `docker compose up -d --build tradebot`
+1. Navigate to `https://tradebot.lab.mattsmith.tech`
+
+#### Additional Notes
+- The Docker build runs tradebot's full test suite with a 90% coverage gate, so the first build is slow — a failing or uncovered change cannot produce an image
+- Never commit real API keys or the Polymarket wallet key; they belong in `.env` only
+
 ## Hardcoded Setup-Specific Configuration
 
 This repo contains values specific to this homelab that must be changed when adapting it for a different environment.
@@ -145,6 +167,9 @@ Hardcoded in two places:
 ### InkyPi Internal Hostname (`inky.lab.mattsmith.tech`)
 `caddy/Caddyfile` proxies `inkypi.lab.mattsmith.tech` to `http://inky.lab.mattsmith.tech`. This is a device-specific internal DNS name that must match whatever hostname your InkyPi device has on your network.
 
+### Tradebot Hostname (`tradebot.lab.mattsmith.tech`)
+`caddy/Caddyfile` proxies `tradebot.lab.mattsmith.tech` (and the `tb/` shortcut) to `http://tradebot:8080`. Update if you rename the service or domain.
+
 ### Timezone (`America/Indiana/Indianapolis`)
 Set for both Pihole and Jellyfin in `docker-compose.yml`. Update the `TZ` environment variable on both services to match your timezone.
 
@@ -161,7 +186,7 @@ Set in `docker-compose.yml` for the `jellyfin` service. These should match the U
 `volume-backup/backup.sh` uploads to `onedrive:/Documents/Homelab/Backups`. Update this path and the `rclone` remote name (`onedrive`) to match your rclone configuration.
 
 ### Volume Backup — Databases
-`volume-backup/backup.sh` explicitly backs up `gravity.db`, `pihole-FTL.db`, and `budget.db`. Add or remove entries here if you add or remove services with persistent SQLite databases.
+`volume-backup/backup.sh` explicitly backs up `gravity.db`, `pihole-FTL.db`, `budget.db`, and `tradebot.db`. Add or remove entries here if you add or remove services with persistent SQLite databases.
 
 ### "Jeremy Files" Shortcut
 `caddy/Caddyfile` (`http://jeremy`) and `caddy/index.html` contain a personal OneDrive share link. Replace or remove this shortcut.

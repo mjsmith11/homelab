@@ -9,6 +9,7 @@ services:
       - caddy_config:/data/caddy_config
       - pihole_data:/data/pihole_data
       - budget_data:/data/budget_data
+      - tradebot_data:/data/tradebot_data
   caddy:
     build: ./caddy
     restart: unless-stopped
@@ -88,6 +89,21 @@ services:
       - caddy
       - budget
 
+  tradebot:
+    build: ./tradebot
+    container_name: tradebot
+    restart: unless-stopped
+    environment:
+      - TRADEBOT_DASHBOARD_PASSWORD=${TRADEBOT_DASHBOARD_PASSWORD}
+      - TRADEBOT_ALPACA_API_KEY=${TRADEBOT_ALPACA_API_KEY}
+      - TRADEBOT_ALPACA_API_SECRET=${TRADEBOT_ALPACA_API_SECRET}
+      - TRADEBOT_POLYMARKET_PRIVATE_KEY=${TRADEBOT_POLYMARKET_PRIVATE_KEY}
+      - TRADEBOT_CONFIRM_LIVE=${TRADEBOT_CONFIRM_LIVE}
+    volumes:
+      - tradebot_data:/data
+    networks:
+      - caddy
+
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
@@ -117,6 +133,7 @@ volumes:
   pihole_data:
   budget_data:
   jellyfin_config:
+  tradebot_data:
 # create this first before running the docker-compose - docker network create caddy
 networks:
   caddy:

@@ -43,6 +43,10 @@
         handle @inkypi {
             reverse_proxy http://inky.lab.mattsmith.tech
         }
+        @tradebot host tradebot.lab.mattsmith.tech
+        handle @tradebot {
+            reverse_proxy http://tradebot:8080
+        }
     }
     handle {
         respond 403
@@ -171,6 +175,14 @@ http://budget {
     @allowed remote_ip 192.168.1.0/24
     handle @allowed {
         redir https://budget.lab.mattsmith.tech
+    }
+    respond 403
+}
+
+http://tb {
+    @allowed remote_ip 192.168.1.0/24
+    handle @allowed {
+        redir https://tradebot.lab.mattsmith.tech
     }
     respond 403
 }
