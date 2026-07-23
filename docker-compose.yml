@@ -10,6 +10,7 @@ services:
       - pihole_data:/data/pihole_data
       - budget_data:/data/budget_data
       - tradebot_data:/data/tradebot_data
+      - price_tracker_data:/data/price_tracker_data
   caddy:
     build: ./caddy
     restart: unless-stopped
@@ -104,6 +105,34 @@ services:
     networks:
       - caddy
 
+  price-tracker-web:
+    build: ./price-tracker
+    container_name: price-tracker-web
+    restart: unless-stopped
+    environment: &price-tracker-env
+      - DATABASE_URL=sqlite:////data/price_tracker.db
+      - SCRAPE_INTERVAL_HOURS=${PRICETRACKER_SCRAPE_INTERVAL_HOURS}
+      - PRICE_HISTORY_RETENTION_DAYS=${PRICETRACKER_PRICE_HISTORY_RETENTION_DAYS}
+      - SMTP_HOST=${PRICETRACKER_SMTP_HOST}
+      - SMTP_PORT=${PRICETRACKER_SMTP_PORT}
+      - SMTP_USER=${PRICETRACKER_SMTP_USER}
+      - SMTP_PASS=${PRICETRACKER_SMTP_PASS}
+      - EMAIL_FROM=${PRICETRACKER_EMAIL_FROM}
+      - EMAIL_TO=${PRICETRACKER_EMAIL_TO}
+    volumes:
+      - price_tracker_data:/data
+    networks:
+      - caddy
+
+  price-tracker-worker:
+    build: ./price-tracker
+    container_name: price-tracker-worker
+    restart: unless-stopped
+    command: ["python", "worker.py"]
+    environment: *price-tracker-env
+    volumes:
+      - price_tracker_data:/data
+
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
@@ -134,6 +163,7 @@ volumes:
   budget_data:
   jellyfin_config:
   tradebot_data:
+  price_tracker_data:
 # create this first before running the docker-compose - docker network create caddy
 networks:
   caddy:

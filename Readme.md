@@ -147,6 +147,30 @@ Long-only, paper-first trading bot for US stocks (Alpaca) and Polymarket, with a
 - The Docker build runs tradebot's full test suite with a 90% coverage gate, so the first build is slow — a failing or uncovered change cannot produce an image
 - Never commit real API keys or the Polymarket wallet key; they belong in `.env` only
 
+### Price Tracker
+Tracks product prices across several retailers (LEGO, Barnes & Noble, Woot, Target, Best Buy, Amazon, Walmart) and emails you when a tracked item drops below your threshold. Source lives in the `price-tracker` git submodule. Runs as two containers built from the same image: `price-tracker-web` (FastAPI dashboard on port 8000) and `price-tracker-worker` (background scraper/scheduler). Both share a `price_tracker_data` volume holding the SQLite database at `/data/price_tracker.db`.
+
+#### Prereqs
+- `git submodule update --init price-tracker` to check out the source (only needed once, or after the submodule pointer changes)
+- Local DNS record for `pricetracker.lab.mattsmith.tech`
+
+#### Environment Variables
+- `PRICETRACKER_SCRAPE_INTERVAL_HOURS` - how often the worker re-scrapes prices (default `6`)
+- `PRICETRACKER_PRICE_HISTORY_RETENTION_DAYS` - price history older than this is pruned daily (default `730`)
+- `PRICETRACKER_SMTP_HOST` / `PRICETRACKER_SMTP_PORT` - outgoing mail server (e.g. `smtp.gmail.com` / `587`)
+- `PRICETRACKER_SMTP_USER` / `PRICETRACKER_SMTP_PASS` - SMTP credentials. For Gmail, create an app password
+- `PRICETRACKER_EMAIL_FROM` / `PRICETRACKER_EMAIL_TO` - sender and recipient for price-drop alerts
+
+#### Additional Setup
+1. Fill in the `PRICETRACKER_*` values in `.env`
+1. Add a local DNS record pointing `pricetracker.lab.mattsmith.tech` to the server's IP
+1. `docker compose up -d --build price-tracker-web price-tracker-worker`
+1. Navigate to `https://pricetracker.lab.mattsmith.tech`
+
+#### Additional Notes
+- The image is based on `mcr.microsoft.com/playwright/python`, so the first build pulls a large browser-automation base image
+- Never commit real SMTP credentials; they belong in `.env` only
+
 ## Hardcoded Setup-Specific Configuration
 
 This repo contains values specific to this homelab that must be changed when adapting it for a different environment.
@@ -170,6 +194,9 @@ Hardcoded in two places:
 ### Tradebot Hostname (`tradebot.lab.mattsmith.tech`)
 `caddy/Caddyfile` proxies `tradebot.lab.mattsmith.tech` (and the `tb/` shortcut) to `http://tradebot:8080`. Update if you rename the service or domain.
 
+### Price Tracker Hostname (`pricetracker.lab.mattsmith.tech`)
+`caddy/Caddyfile` proxies `pricetracker.lab.mattsmith.tech` (and the `pt/` shortcut) to `http://price-tracker-web:8000`. Update if you rename the service or domain.
+
 ### Timezone (`America/Indiana/Indianapolis`)
 Set for both Pihole and Jellyfin in `docker-compose.yml`. Update the `TZ` environment variable on both services to match your timezone.
 
@@ -186,7 +213,7 @@ Set in `docker-compose.yml` for the `jellyfin` service. These should match the U
 `volume-backup/backup.sh` uploads to `onedrive:/Documents/Homelab/Backups`. Update this path and the `rclone` remote name (`onedrive`) to match your rclone configuration.
 
 ### Volume Backup — Databases
-`volume-backup/backup.sh` explicitly backs up `gravity.db`, `pihole-FTL.db`, `budget.db`, and `tradebot.db`. Add or remove entries here if you add or remove services with persistent SQLite databases.
+`volume-backup/backup.sh` explicitly backs up `gravity.db`, `pihole-FTL.db`, `budget.db`, `tradebot.db`, and `price_tracker.db`. Add or remove entries here if you add or remove services with persistent SQLite databases.
 
 ### "Jeremy Files" Shortcut
 `caddy/Caddyfile` (`http://jeremy`) and `caddy/index.html` contain a personal OneDrive share link. Replace or remove this shortcut.

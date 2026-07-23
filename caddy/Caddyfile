@@ -47,6 +47,10 @@
         handle @tradebot {
             reverse_proxy http://tradebot:8080
         }
+        @pricetracker host pricetracker.lab.mattsmith.tech
+        handle @pricetracker {
+            reverse_proxy http://price-tracker-web:8000
+        }
     }
     handle {
         respond 403
@@ -183,6 +187,14 @@ http://tb {
     @allowed remote_ip 192.168.1.0/24
     handle @allowed {
         redir https://tradebot.lab.mattsmith.tech
+    }
+    respond 403
+}
+
+http://pt {
+    @allowed remote_ip 192.168.1.0/24
+    handle @allowed {
+        redir https://pricetracker.lab.mattsmith.tech
     }
     respond 403
 }
