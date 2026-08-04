@@ -158,7 +158,7 @@ services:
               capabilities: [gpu]
 
   calibre-web-automated:
-    image: crocodilestickcollective/calibre-web-automated:latest
+    image: ghcr.io/crocodilestick/calibre-web-automated:latest
     container_name: calibre-web-automated
     restart: unless-stopped
     environment:
