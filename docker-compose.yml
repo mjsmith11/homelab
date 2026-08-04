@@ -11,6 +11,7 @@ services:
       - budget_data:/data/budget_data
       - tradebot_data:/data/tradebot_data
       - price_tracker_data:/data/price_tracker_data
+      - calibre_config:/data/calibre_config
   caddy:
     build: ./caddy
     restart: unless-stopped
@@ -156,6 +157,21 @@ services:
               count: all
               capabilities: [gpu]
 
+  calibre-web-automated:
+    image: crocodilestickcollective/calibre-web-automated:latest
+    container_name: calibre-web-automated
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Indiana/Indianapolis
+    volumes:
+      - calibre_config:/config
+      - calibre_library:/calibre-library
+      - calibre_ingest:/cwa-book-ingest
+    networks:
+      - caddy
+
 volumes:
   caddy_data:
   caddy_config:
@@ -164,6 +180,25 @@ volumes:
   jellyfin_config:
   tradebot_data:
   price_tracker_data:
+  # Calibre volumes are bind-backed onto the ZFS array (see CALIBRE_*_PATH in .env)
+  calibre_config:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${CALIBRE_CONFIG_PATH}
+  calibre_library:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${CALIBRE_LIBRARY_PATH}
+  calibre_ingest:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${CALIBRE_INGEST_PATH}
 # create this first before running the docker-compose - docker network create caddy
 networks:
   caddy:

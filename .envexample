@@ -8,6 +8,11 @@ JELLYFIN_MEDIA_PATH=/path/to/media
 SAMBA_SHARE_PATH=/path/to/share
 SAMBA_PASSWORD=changeme
 
+# Calibre Web (bind-mount targets on the ZFS array; must exist before `docker compose up`)
+CALIBRE_CONFIG_PATH=/path/to/zfs/calibre/config
+CALIBRE_LIBRARY_PATH=/path/to/zfs/calibre/library
+CALIBRE_INGEST_PATH=/path/to/zfs/calibre/ingest
+
 # Tradebot (leave keys blank for keyless paper trading)
 TRADEBOT_DASHBOARD_PASSWORD=change-me
 TRADEBOT_ALPACA_API_KEY=

@@ -171,6 +171,31 @@ Tracks product prices across several retailers (LEGO, Barnes & Noble, Woot, Targ
 - The image is based on `mcr.microsoft.com/playwright/python`, so the first build pulls a large browser-automation base image
 - Never commit real SMTP credentials; they belong in `.env` only
 
+### Calibre Web (Ebooks)
+Web front-end for a Calibre ebook library, using [Calibre-Web-Automated](https://github.com/crocodilestick/Calibre-Web-Automated) (CWA). Runs as the `calibre-web-automated` container (web UI on port 8083) and gives household members a browser-based library plus an OPDS feed for reading apps on tablets/phones. Three volumes: `calibre_config` (app settings/users), `calibre_library` (the Calibre library and `metadata.db`), and `calibre_ingest` (a watched folder — any ebook dropped in is auto-converted and imported). All three are named volumes bind-backed onto the ZFS array via `driver_opts` (paths set by `CALIBRE_*_PATH` in `.env`), so the data lives on the pool. Only `calibre_config` is included in the off-site Volume Backup; the library is intentionally excluded (it can be large) and relies on ZFS snapshots/redundancy instead.
+
+#### Prereqs
+- Local DNS record for `books.lab.mattsmith.tech`
+- The three `CALIBRE_*_PATH` directories on the ZFS array must exist before `docker compose up` — a `bind` volume will not create the target and the container fails to start if it is missing
+
+#### Environment Variables
+- `CALIBRE_CONFIG_PATH` - ZFS path for CWA app config/users (backs the `calibre_config` volume)
+- `CALIBRE_LIBRARY_PATH` - ZFS path for the Calibre library and `metadata.db` (backs the `calibre_library` volume)
+- `CALIBRE_INGEST_PATH` - ZFS path for the auto-import watched folder (backs the `calibre_ingest` volume)
+
+#### Additional Setup
+1. Create the three `CALIBRE_*_PATH` directories on the ZFS array (a dedicated dataset is a good fit) and set the paths in `.env`
+1. Add a local DNS record pointing `books.lab.mattsmith.tech` to the server's IP
+1. `docker compose up -d calibre-web-automated`
+1. Navigate to `https://books.lab.mattsmith.tech` and log in with the default `admin` / `admin123`, then change the password immediately
+1. To seed an existing Calibre library, copy its folder contents (including `metadata.db`) into `CALIBRE_LIBRARY_PATH` while the container is stopped, then start it. Alternatively, upload books through the web UI or drop files into `CALIBRE_INGEST_PATH`
+1. Reading on an iPad/tablet: install an OPDS-capable reader (e.g. KyBook 3, Marvin, Panels) and point it at `https://books.lab.mattsmith.tech/opds`, or just read in the browser
+1. (Optional) Send-to-email/Kindle: configure the SMTP server under Admin → Edit Email Server Settings in the web UI (the same Gmail app-password approach used by Price Tracker works)
+
+#### Additional Notes
+- Do not open the same library in desktop Calibre and CWA at the same time — `metadata.db` is not safe for concurrent writers. Let CWA own the library day-to-day
+- The default `admin` / `admin123` credentials are well-known; change them on first login
+
 ## Hardcoded Setup-Specific Configuration
 
 This repo contains values specific to this homelab that must be changed when adapting it for a different environment.
@@ -197,8 +222,11 @@ Hardcoded in two places:
 ### Price Tracker Hostname (`pricetracker.lab.mattsmith.tech`)
 `caddy/Caddyfile` proxies `pricetracker.lab.mattsmith.tech` (and the `pt/` shortcut) to `http://price-tracker-web:8000`. Update if you rename the service or domain.
 
+### Calibre Web Hostname (`books.lab.mattsmith.tech`)
+`caddy/Caddyfile` proxies `books.lab.mattsmith.tech` (and the `books/` shortcut) to `http://calibre-web-automated:8083`. Update if you rename the service or domain.
+
 ### Timezone (`America/Indiana/Indianapolis`)
-Set for both Pihole and Jellyfin in `docker-compose.yml`. Update the `TZ` environment variable on both services to match your timezone.
+Set for Pihole, Jellyfin, and Calibre Web in `docker-compose.yml`. Update the `TZ` environment variable on each service to match your timezone.
 
 ### Pihole Web Password
 `FTLCONF_webserver_api_password: '2get2pihole'` is hardcoded in `docker-compose.yml`. This should be moved to `.env` as `PIHOLE_PASSWORD` and referenced as `${PIHOLE_PASSWORD}`.
@@ -213,7 +241,7 @@ Set in `docker-compose.yml` for the `jellyfin` service. These should match the U
 `volume-backup/backup.sh` uploads to `onedrive:/Documents/Homelab/Backups`. Update this path and the `rclone` remote name (`onedrive`) to match your rclone configuration.
 
 ### Volume Backup — Databases
-`volume-backup/backup.sh` explicitly backs up `gravity.db`, `pihole-FTL.db`, `budget.db`, `tradebot.db`, and `price_tracker.db`. Add or remove entries here if you add or remove services with persistent SQLite databases.
+`volume-backup/backup.sh` explicitly backs up `gravity.db`, `pihole-FTL.db`, `budget.db`, `tradebot.db`, and `price_tracker.db`. Add or remove entries here if you add or remove services with persistent SQLite databases. (The Calibre library — including its `metadata.db` — is deliberately kept out of the off-site backup and protected by ZFS instead.)
 
 ### "Jeremy Files" Shortcut
 `caddy/Caddyfile` (`http://jeremy`) and `caddy/index.html` contain a personal OneDrive share link. Replace or remove this shortcut.

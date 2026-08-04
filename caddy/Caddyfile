@@ -51,6 +51,10 @@
         handle @pricetracker {
             reverse_proxy http://price-tracker-web:8000
         }
+        @books host books.lab.mattsmith.tech
+        handle @books {
+            reverse_proxy http://calibre-web-automated:8083
+        }
     }
     handle {
         respond 403
@@ -195,6 +199,14 @@ http://pt {
     @allowed remote_ip 192.168.1.0/24
     handle @allowed {
         redir https://pricetracker.lab.mattsmith.tech
+    }
+    respond 403
+}
+
+http://books {
+    @allowed remote_ip 192.168.1.0/24
+    handle @allowed {
+        redir https://books.lab.mattsmith.tech
     }
     respond 403
 }
